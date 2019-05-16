@@ -21,10 +21,21 @@ define([
 
     return declare("DynamicRadioButtons.widget.DynamicRadioButtons", [ _WidgetBase ], {
 
+        //Parameters configured in the Modeler
+        enumAttr: "",
+        enumValues: [],
+        enumKey: "",
+        captionBefore: "",
+        captionAttr: "",
+        captionAfter: "",
+        mfOrNano: "",
+        onChangeMF: "",
+        onChangeNano: null,
 
         // Internal variables.
         _handles: null,
         _contextObj: null,
+
 
         constructor: function () {
             this._handles = [];
@@ -87,6 +98,39 @@ define([
             logger.debug(this.id + "._executeCallback" + (from ? " from " + from : ""));
             if (cb && typeof cb === "function") {
                 cb();
+            }
+        },
+
+        _handleOnChange: function (radioNode) {
+            if (this.mfOrNano === "mf") {               
+                if (this.onChangeMF) {
+                    mx.data.action({
+                        params: {
+                            applyto: "selection",
+                            actionname: this.onChangeMF,
+                            guids: [this._contextObj.getGuid()]
+                        },
+                        store: {
+                            caller: this.mxform
+                        },
+                        callback: function () {}, // stub function
+                        error: lang.hitch(this, function (error) {
+                            console.log(this.id + ": An error occurred while executing microflow: " + error.description);
+                        })
+                    }, this);
+                }
+            } else if (this.mfOrNano === "nano") { 
+                if (this.onChangeNano.nanoflow !== undefined) {
+                    mx.data.callNanoflow({
+                        nanoflow: this.onChangeNano,
+                        origin: this.mxform,
+                        context: this.mxcontext,
+                        callback: function() {},
+                        error: function(error) {
+                            alert(error.message);
+                        }
+                    });
+                }
             }
         }
     });
