@@ -1,0 +1,11 @@
+{
+  "generator-mendix": {
+    "promptValues": {
+      "copyright": "ITvisors (2019)",
+      "license": "Apache 2",
+      "author": "Johan Munneke",
+      "boilerplate": "empty",
+      "widgetoptions": []
+    }
+  }
+}
