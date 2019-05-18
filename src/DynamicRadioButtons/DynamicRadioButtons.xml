@@ -25,12 +25,12 @@
                     <category>Behavior</category>
                     <description>This should be exactly the same key as the connected enumeration.</description>
                 </property>
-                <property key="captionBefore" type="string">
+                <property key="captionBefore" type="string" required="false">
                     <caption>Caption before</caption>
                     <category>Behavior</category>
                     <description>The caption can consist out of three parts: Some text + Attribute + Some text</description>
                 </property>
-                <property key="captionAttr" type="attribute" required="true">
+                <property key="captionAttr" type="attribute" required="false">
                     <caption>Attribute</caption>
                     <category>Behavior</category>
                     <description>The value of an attribute to add to the caption</description>
@@ -48,7 +48,21 @@
                 </property>
             </properties>
         </property>
-        <property key="mfOrNano" type="enumeration" defaultValue="noOnChange">
+        <property key="readonly" type="boolean" required="true" defaultValue="false">
+		  <caption>Read only</caption>
+		  <category>Behavior</category>
+		  <description></description> 
+		</property>	
+        <property key="direction" type="enumeration" defaultValue="vertical" required="true">
+			<caption>Direction</caption>
+			<category>Behavior</category>
+			<description></description> 
+			<enumerationValues>
+				<enumerationValue key="horizontal">Horizontal</enumerationValue>
+				<enumerationValue key="vertical">Vertical</enumerationValue>
+			</enumerationValues>
+		</property>
+        <property key="mfOrNano" type="enumeration" defaultValue="noOnChange" required="true">
             <caption>onChange behaviour</caption>
             <category>Configuration</category>
             <description></description>
