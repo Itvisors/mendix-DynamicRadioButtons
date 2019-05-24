@@ -63,7 +63,7 @@
 			</enumerationValues>
 		</property>
         <property key="showLabel" type="enumeration" defaultValue="noLabel" required="true">
-			<caption>ShowLabel</caption>
+			<caption>Show label</caption>
 			<category>General</category>
 			<description></description> 
 			<enumerationValues>
