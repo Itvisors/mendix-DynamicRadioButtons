@@ -3,24 +3,17 @@ define([
     "mxui/widget/_WidgetBase",
     "dijit/_TemplatedMixin",
 
-    "mxui/dom",
-    "dojo/dom",
-    "dojo/dom-prop",
-    "dojo/dom-geometry",
     "dojo/dom-class",
     "dojo/dom-style",
     "dojo/dom-construct",
     "dojo/on",
     "dojo/dom-attr",
-    "dojo/_base/array",
     "dojo/_base/lang",
-    "dojo/text",
     "dojo/html",
-    "dojo/_base/event",
     "dojo/text!DynamicRadioButtons/widget/template/DynamicRadioButtons.html",
 
 
-], function (declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoOn, dojoAttr, dojoArray, lang, dojoText, dojoHtml, dojoEvent, widgetTemplate) {
+], function (declare, _WidgetBase, _TemplatedMixin, dojoClass, dojoStyle, dojoConstruct, dojoOn, dojoAttr, lang, dojoHtml, widgetTemplate) {
     "use strict";
 
     return declare("DynamicRadioButtons.widget.DynamicRadioButtons", [ _WidgetBase, _TemplatedMixin ], {
@@ -47,13 +40,10 @@ define([
         widgetNode: null,
 
         // Internal variables.
-        _handles: null,
         _contextObj: null,
-        _initialized: false,
 
 
         constructor: function () {
-            this._handles = [];
         },
 
         postCreate: function () {
@@ -62,12 +52,9 @@ define([
 
         update: function (obj, callback) {
             logger.debug(this.id + ".update");
-
             this._contextObj = obj;
             this._resetSubscriptions();
-            if (!this._initialized) {
-                this._setupRadioButtons();
-            }
+            this._setupRadioButtons();
             this._updateRendering(callback);
         },
 
@@ -89,8 +76,17 @@ define([
             }
 
             this._clearValidations();
-
+            this._setupRadioButtonSelected();
             this._executeCallback(callback, "_updateRendering");
+        },
+
+        _setupRadioButtonSelected: function () {
+            //Find selected element and check it
+            var enumSelected = this._contextObj.get(this.enumAttr);
+            var radioNode = document.getElementById(this._contextObj.getGuid() + "-" + enumSelected);
+            if (radioNode != null) {
+                dojoAttr.set(radioNode, "checked", true);
+            }
         },
 
         _setupRadioButtons: function () {
@@ -99,19 +95,26 @@ define([
             if (this.readOnly || this.get("disabled") || this.readonly) {
                 this._isReadOnly = true;
             }
+            // Add a label if needed
             if (this.showLabel === "useLabel") {
                 var labelHtml = "<label class='control-label col-sm-" + this.labelWidth + "'>" + 
                     this.labelCaption + "</label>";
+                // Label should be place in the widgetNode, in front of the radio buttons
                 dojoConstruct.place(labelHtml, this.widgetNode, "first");
+                // Set classes needed for the labels
                 dojoClass.add(this.widgetNode, "form-group");
                 dojoClass.add(this.inputNode, "col-sm-" + (12-this.labelWidth));
             }
+            // Loop over the enumeration values
             dojo.forEach(this.enumValues, lang.hitch(this, function(enumValue){
                 var html, 
                     disabled = "",
                     checked = "",
-                    name = this._contextObj.getGuid() + "-" + this.id;
+                    name = this._contextObj.getGuid() + "-" + this.id,
+                    id = this._contextObj.getGuid() + "-" + enumValue.enumKey;
+
                 
+                // Use some strings to be able to create the html dynamically
                 if (this._isReadOnly) {
                     disabled = "disabled";
                 }
@@ -120,6 +123,7 @@ define([
                     checked = "checked";
                 }
 
+                // If an attribute is used, get the value. For enumerations the caption is retrieved
                 var captionAttr;
                 if (this._contextObj.isEnum(enumValue.captionAttr)) {
                     captionAttr = this._contextObj.getEnumCaption(enumValue.captionAttr);
@@ -127,14 +131,17 @@ define([
                     captionAttr = this._contextObj.get(enumValue.captionAttr);
                 }
 
-                html = "<input type='radio' name='"+ name +"' value='" + enumValue.enumKey + "' " + disabled + " " + checked + "></input>"
+                // Setup the html for one radio button
+                html = "<input type='radio' name='"+ name +"' id='"+ id + "' value='" + enumValue.enumKey + "' " + disabled + " " + checked + "></input>"
                 + enumValue.captionBefore + captionAttr + enumValue.captionAfter ;
+                // Vertical has some other classes and an extra div to show the underneath eachother
                 if (this.direction === "horizontal") {
                     html = "<label class='radio-inline'>" + html + "</label>";
                 } else {
                     html = "<div class='radio'><label>" + html + "</label></div>";
                 }
 
+                //Place the radiobutton in the inputNode and attach an onclick event
                 var buttonNode = dojoConstruct.place(html, this.inputNode);
                 dojoOn(buttonNode, "click", lang.hitch(this, function() {this._handleOnClick(buttonNode, enumValue.enumKey);}));
             }));
@@ -222,14 +229,18 @@ define([
             }
         },
 
+        //Handle onclick on the radiobuttons
         _handleOnClick: function (radioNode, key) {
+            // If the widget is readonly, do nothing
             if (this._isReadOnly) {
                 return;
             }
 
+            // Check the clicked radiobutton
             dojoAttr.set(radioNode, "checked", true);
             this._contextObj.set(this.enumAttr, key);
 
+            //Call the microflow or nanoflow, depending on the option selected
             if (this.mfOrNano === "mf") {               
                 if (this.onChangeMF) {
                     mx.data.action({
