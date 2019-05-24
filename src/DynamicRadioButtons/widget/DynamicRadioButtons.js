@@ -38,9 +38,13 @@ define([
         onChangeNano: null,
         readonly: false,
         direction: "",
+        showLabel: false,
+        labelCaption: "",
+        labelWidth: 0,
 
         // DOM elements
         inputNode: null,
+        widgetNode: null,
 
         // Internal variables.
         _handles: null,
@@ -95,7 +99,13 @@ define([
             if (this.readOnly || this.get("disabled") || this.readonly) {
                 this._isReadOnly = true;
             }
-
+            if (this.showLabel === "useLabel") {
+                var labelHtml = "<label class='control-label col-sm-" + this.labelWidth + "'>" + 
+                    this.labelCaption + "</label>";
+                dojoConstruct.place(labelHtml, this.widgetNode, "first");
+                dojoClass.add(this.widgetNode, "form-group");
+                dojoClass.add(this.inputNode, "col-sm-" + (12-this.labelWidth));
+            }
             dojo.forEach(this.enumValues, lang.hitch(this, function(enumValue){
                 var html, 
                     disabled = "",

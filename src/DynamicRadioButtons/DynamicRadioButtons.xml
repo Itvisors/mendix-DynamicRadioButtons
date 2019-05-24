@@ -8,7 +8,7 @@
     <properties>      
         <property key="enumAttr" type="attribute" required="true">
             <caption>Enumeration</caption>
-            <category>Behavior</category>
+            <category>General</category>
             <description>The enumeration to show</description>
             <attributeTypes>
                 <attributeType name="Enum"/>
@@ -17,22 +17,22 @@
 
         <property key="enumValues" type="object" isList="true" required="false">
             <caption>Values</caption>
-            <category>Behavior</category>
+            <category>General</category>
             <description>List of enumeration keys, captions and attributes.</description>
             <properties>
                 <property key="enumKey" type="string" required="true">
                     <caption>Key</caption>
-                    <category>Behavior</category>
+                    <category>General</category>
                     <description>This should be exactly the same key as the connected enumeration.</description>
                 </property>
                 <property key="captionBefore" type="string" required="false">
                     <caption>Caption before</caption>
-                    <category>Behavior</category>
+                    <category>General</category>
                     <description>The caption can consist out of three parts: Some text + Attribute + Some text</description>
                 </property>
                 <property key="captionAttr" type="attribute" required="false">
                     <caption>Attribute</caption>
-                    <category>Behavior</category>
+                    <category>General</category>
                     <description>The value of an attribute to add to the caption</description>
                     <attributeTypes>
                         <attributeType name="String"/>
@@ -43,28 +43,47 @@
                 </property>
                 <property key="captionAfter" type="string" required="false">
                     <caption>Caption after</caption>
-                    <category>Behavior</category>
+                    <category>General</category>
                     <description>The caption can consist out of three parts: Some text + Attribute + Some text</description>
                 </property>
             </properties>
         </property>
         <property key="readonly" type="boolean" required="true" defaultValue="false">
 		  <caption>Read only</caption>
-		  <category>Behavior</category>
+		  <category>General</category>
 		  <description></description> 
 		</property>	
         <property key="direction" type="enumeration" defaultValue="vertical" required="true">
 			<caption>Direction</caption>
-			<category>Behavior</category>
+			<category>General</category>
 			<description></description> 
 			<enumerationValues>
 				<enumerationValue key="horizontal">Horizontal</enumerationValue>
 				<enumerationValue key="vertical">Vertical</enumerationValue>
 			</enumerationValues>
 		</property>
+        <property key="showLabel" type="enumeration" defaultValue="noLabel" required="true">
+			<caption>ShowLabel</caption>
+			<category>General</category>
+			<description></description> 
+			<enumerationValues>
+				<enumerationValue key="useLabel">Yes</enumerationValue>
+				<enumerationValue key="noLabel">No</enumerationValue>
+			</enumerationValues>
+		</property>
+        <property key="labelCaption" type="string" required="false">
+			<caption>Label caption</caption>
+			<category>General</category>
+			<description></description> 
+		</property>
+        <property key="labelWidth" type="integer" required="true" defaultValue="3">
+			<caption>Label width</caption>
+			<category>General</category>
+			<description></description> 
+		</property>
         <property key="mfOrNano" type="enumeration" defaultValue="noOnChange" required="true">
             <caption>onChange behaviour</caption>
-            <category>Configuration</category>
+            <category>Events</category>
             <description></description>
             <enumerationValues>
                 <enumerationValue key="noOnChange">None</enumerationValue>
@@ -74,13 +93,13 @@
         </property>
         <property key="onChangeNano" type="nanoflow" required="false">
             <caption>onChange Nanoflow</caption>
-            <category>Configuration</category>
+            <category>Events</category>
             <description>Nanoflow to trigger when the widget is clicked</description>
             <returnType type="Void" />
         </property>
         <property key="onChangeMF" type="microflow" required="false">
             <caption>onChange Microflow</caption>
-            <category>Configuration</category>
+            <category>Events</category>
             <description>Microflow to trigger when the widget is clicked</description>
             <returnType type="Void" />
         </property>
