@@ -249,9 +249,6 @@ define([
                             actionname: this.onChangeMF,
                             guids: [this._contextObj.getGuid()]
                         },
-                        store: {
-                            caller: this.mxform
-                        },
                         callback: function () {}, // stub function
                         error: lang.hitch(this, function (error) {
                             console.log(this.id + ": An error occurred while executing microflow: " + error.description);
