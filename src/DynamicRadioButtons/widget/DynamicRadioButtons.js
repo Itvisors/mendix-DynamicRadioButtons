@@ -124,11 +124,13 @@ define([
                 }
 
                 // If an attribute is used, get the value. For enumerations the caption is retrieved
-                var captionAttr;
+                var captionAttr = "";
+                if (enumValue.captionAttr !== null && enumValue.captionAttr !== ""){
                 if (this._contextObj.isEnum(enumValue.captionAttr)) {
-                    captionAttr = this._contextObj.getEnumCaption(enumValue.captionAttr);
-                } else {
-                    captionAttr = this._contextObj.get(enumValue.captionAttr);
+                        captionAttr = this._contextObj.getEnumCaption(enumValue.captionAttr);
+                    } else {
+                        captionAttr = this._contextObj.get(enumValue.captionAttr);
+                    }
                 }
 
                 // Setup the html for one radio button
