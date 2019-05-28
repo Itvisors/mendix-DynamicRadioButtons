@@ -84,7 +84,7 @@ define([
             //Find selected element and check it
             var enumSelected = this._contextObj.get(this.enumAttr);
             var radioNode = document.getElementById(this._contextObj.getGuid() + "-" + enumSelected);
-            if (radioNode != null) {
+            if (radioNode !== null) {
                 dojoAttr.set(radioNode, "checked", true);
             }
         },
