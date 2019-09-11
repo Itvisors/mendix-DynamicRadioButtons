@@ -94,13 +94,13 @@
         <property key="onChangeNano" type="nanoflow" required="false">
             <caption>onChange Nanoflow</caption>
             <category>Events</category>
-            <description>Nanoflow to trigger when the widget is clicked</description>
+            <description>Nanoflow to trigger when the value is changed</description>
             <returnType type="Void" />
         </property>
         <property key="onChangeMF" type="microflow" required="false">
             <caption>onChange Microflow</caption>
             <category>Events</category>
-            <description>Microflow to trigger when the widget is clicked</description>
+            <description>Microflow to trigger when the value is changed</description>
             <returnType type="Void" />
         </property>
     </properties>
